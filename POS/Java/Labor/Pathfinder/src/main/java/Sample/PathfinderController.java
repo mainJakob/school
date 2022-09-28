@@ -1,6 +1,6 @@
 package Sample;
 
-import javafx.application.Application;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -12,7 +12,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 
 import java.net.URL;
@@ -47,28 +46,39 @@ public class PathfinderController implements Initializable {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                canvas.setHeight(t1.intValue()*10);
-                canvas.setWidth(t1.intValue()*10);
+                canvas.setHeight(t1.intValue() * 14);
+                canvas.setWidth(t1.intValue() * 6);
             }
         });
 
     }
 
-    public void calculate(){
-        System.out.println( "TBD");
+    public void calculate() {
+        System.out.println("TBD");
     }
 
-    public void clearCanvas(){
-        gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
+    public void clearCanvas() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        Node.nodeMap = new Node[100][100];
     }
 
-    public void drawGRID(){
-        if(checkGrid.isSelected()){
-            for(int i  = 0;i<canvas.getWidth();i++){
-                gc.strokeLine(i,0,i, canvas.getHeight());
+    public void drawGRID() {
+        if (checkGrid.isSelected()) {
+            for (int i = 0; i < canvas.getWidth(); i += 10) { //calculate Node size
+                gc.strokeLine(i, 0, i, canvas.getWidth());
+                new Node(i, i, false);
 
             }
-            for(int i=0 ; i<canvas.getHeight();i++)
+            for (int i = 0; i < canvas.getHeight(); i += 10) { //calculate Node size
+                gc.strokeLine(i, 0, i, canvas.getHeight());
+                new Node(i, i, false);
+            }
+        } else {
+            killGRID();
         }
+    }
+
+    public void killGRID() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }
