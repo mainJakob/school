@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class Sample extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        String fxmlPath = ".../pathfinder.fxml";
+        String fxmlPath = "src/main/resources/pathfinder.fxml";
 
         AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource(fxmlPath));
 

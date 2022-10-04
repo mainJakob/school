@@ -46,8 +46,9 @@ public class PathfinderController implements Initializable {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                canvas.setHeight(t1.intValue() * 14);
-                canvas.setWidth(t1.intValue() * 6);
+                GridData.setNodesize(number.intValue());
+                killGRID();
+                drawGRID();
             }
         });
 
@@ -58,20 +59,17 @@ public class PathfinderController implements Initializable {
     }
 
     public void clearCanvas() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Node.nodeMap = new Node[100][100];
     }
 
     public void drawGRID() {
         if (checkGrid.isSelected()) {
-            for (int i = 0; i < canvas.getWidth(); i += 10) { //calculate Node size
+            for (int i = 0; i < canvas.getWidth(); i += GridData.nodesize) {
                 gc.strokeLine(i, 0, i, canvas.getWidth());
-                new Node(i, i, false);
 
             }
-            for (int i = 0; i < canvas.getHeight(); i += 10) { //calculate Node size
+            for (int i = 0; i < canvas.getHeight(); i += GridData.nodesize) {
                 gc.strokeLine(i, 0, i, canvas.getHeight());
-                new Node(i, i, false);
+
             }
         } else {
             killGRID();

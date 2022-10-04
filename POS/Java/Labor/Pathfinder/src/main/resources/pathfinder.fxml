@@ -14,7 +14,7 @@
       <Label text="Label" />
       <HBox prefHeight="239.0" prefWidth="600.0" fx:id="hbox">
          <children>
-            <Canvas height="240.0" width="599.0" fx:id="canvas"/>
+            <Canvas height="600.0" width="1400.0" fx:id="canvas"/>
          </children>
       </HBox>
       <CheckBox mnemonicParsing="false" text="CheckBox" fx:id="checkGrid" />
