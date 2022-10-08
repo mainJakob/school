@@ -1,4 +1,4 @@
-package Sample;
+package Pathfinder;
 
 public enum Type {
     EMPTY,
