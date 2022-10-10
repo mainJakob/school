@@ -31,6 +31,7 @@ public class GridData {
     }
 
     public void fillGrid(){
+        allNodes.clear();
         for(int x = 0;x<this.maxX/nodesize;x+=1){
             for(int y = 0;y<this.maxY/nodesize;y+=1){
                 System.out.println(new Node(x,y, Type.EMPTY));
@@ -43,6 +44,7 @@ public class GridData {
         System.out.println(nodeMap.length);
     }
     public void fillNeigbhours(){
+        System.out.println(allNodes);
         for(Node nodi : allNodes) {
             LinkedList<Node> toadd = new LinkedList<>();
             for (int x = -1; x <= 1; x++) {
@@ -51,7 +53,8 @@ public class GridData {
                     if (nodi.getX() + x >= nodeMap.length || nodi.getY() + y >= nodeMap[nodi.getX()].length) continue;
                     if (nodi.getX() + x == nodi.getX() && nodi.getY() + y == nodi.getY()) continue;
                     else {
-                        System.out.println("node added");
+
+                        System.out.println("node added to " + nodi);
                         toadd.add(nodeMap[nodi.getX() + x][nodi.getY() + y]);
                     }
 
