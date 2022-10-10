@@ -96,6 +96,7 @@ public class PathfinderController implements Initializable {
                 int clickX = x/ GridData.nodesize;
                 int clickY = y/ GridData.nodesize;
                 Node clicked = data.getNode(clickX,clickY);
+                System.out.println(clicked.getNeighbours());
                 if(clicked.getType() == Type.EMPTY){
                     System.out.println("Empty");
                     clicked.setType(Type.BARRIER);

@@ -1,11 +1,14 @@
 package Pathfinder;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Node {
 
     private int x;
     private int y;
+    private List<Node> neighbours;
     private Type type;
 
 
@@ -14,6 +17,7 @@ public class Node {
         this.x = x;
         this.y = y;
         this.type = type;
+        this.neighbours = new LinkedList<>();
     }
 
     public int getX() {
@@ -32,12 +36,23 @@ public class Node {
         this.type = type;
     }
 
+    public void setNeighbours(List<Node> neighbours) {
+        this.neighbours = neighbours;
+    }
+
+    public List<Node> getNeighbours() {
+        return neighbours;
+    }
+
     public int getY() {
         return y;
     }
 
     public Type getType() {
         return type;
+    }
+    public void addNeighbour(Node add){
+        this.neighbours.add(add);
     }
 
     @Override
