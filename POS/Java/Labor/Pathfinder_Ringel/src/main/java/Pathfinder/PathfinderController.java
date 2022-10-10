@@ -8,9 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,17 +36,35 @@ public class PathfinderController implements Initializable {
     @FXML
     private HBox hBox;
 
+    @FXML
+    private RadioButton rbtnStart;
 
+    @FXML
+    private RadioButton rbtnBarrier;
+
+    @FXML
+    private RadioButton rbtnEmpty;
+
+    @FXML
+    private RadioButton rbtnTarget;
     private GraphicsContext gc;
 
     private GridData data;
 
     private  Node oldNode;
 
+    private ToggleGroup tg;
+
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        tg = new ToggleGroup();
+        rbtnStart.setToggleGroup(tg);
+        rbtnEmpty.setToggleGroup(tg);
+        rbtnBarrier.setToggleGroup(tg);
+        rbtnTarget.setToggleGroup(tg);
         data = new GridData((int)canvas.getWidth(),(int)canvas.getHeight());
         data.fillGrid();
         btnGo.setOnAction(e -> calculate());
@@ -76,27 +93,30 @@ public class PathfinderController implements Initializable {
                 System.out.println("changed");
             }
         });
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
+        slider.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                GridData.setNodesize(number.intValue());
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println(slider.getValue());
+                GridData.setNodesize((int)slider.getValue());
                 data = new GridData((int)canvas.getWidth(),(int)canvas.getHeight());
                 clearCanvas();
                 data.fillGrid();
                 drawGRID();
-
-
             }
         });
+
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 int x = (int) mouseEvent.getX();
                 int y = (int) mouseEvent.getY();
+                doDraw(x,y);
+                /*
                 int clickX = x/ GridData.nodesize;
                 int clickY = y/ GridData.nodesize;
                 Node clicked = data.getNode(clickX,clickY);
                 System.out.println(clicked.getNeighbours());
+
                 if(clicked.getType() == Type.EMPTY){
                     System.out.println("Empty");
                     clicked.setType(Type.BARRIER);
@@ -111,6 +131,8 @@ public class PathfinderController implements Initializable {
                     gc.clearRect(clickX * GridData.nodesize, clickY * GridData.nodesize, GridData.nodesize,GridData.nodesize);
                     return;
                 }
+                */
+
 
 
 
@@ -121,8 +143,12 @@ public class PathfinderController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 int x = (int) mouseEvent.getX();
                 int y = (int) mouseEvent.getY();
+                doDraw(x,y);
+                /*
                 int clickX = x/ GridData.nodesize;
                 int clickY = y/ GridData.nodesize;
+                //doDraw(x,y);
+
                 Node clicked = data.getNode(clickX,clickY);
                 if(clicked.getType() == Type.EMPTY && oldNode != clicked){
                     System.out.println("Empty");
@@ -139,6 +165,8 @@ public class PathfinderController implements Initializable {
                     oldNode = clicked;
                     return;
                 }
+
+                 */
 
 
             }
@@ -170,7 +198,39 @@ public class PathfinderController implements Initializable {
     }
 
     public void killGRID() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        data = new GridData((int)canvas.getWidth(),(int)canvas.getHeight());
+        data.fillGrid();
+        clearCanvas();
         checkGrid.setSelected(false);
     }
-}
+    public void doDraw(int x , int y){
+        int clickX = x/GridData.nodesize;
+        int clickY = y/GridData.nodesize;
+        Node clicked = data.getNode(x/GridData.nodesize,y/GridData.nodesize);
+        if(rbtnStart.isSelected() && !data.hasStart()){
+            gc.setFill(Paint.valueOf("Green"));
+            gc.fillRect(clickX * GridData.nodesize, clickY * GridData.nodesize, GridData.nodesize,GridData.nodesize);
+            clicked.setType(Type.START);
+
+            return;
+        }
+        if(rbtnTarget.isSelected() && !data.hasTarget()){
+            gc.setFill(Paint.valueOf("Red"));
+            gc.fillRect(clickX * GridData.nodesize, clickY * GridData.nodesize, GridData.nodesize,GridData.nodesize);
+            clicked.setType(Type.TARGET);
+            return;
+        }
+        if(rbtnBarrier.isSelected()){
+            gc.setFill(Paint.valueOf("Blue"));
+            gc.fillRect(clickX * GridData.nodesize, clickY * GridData.nodesize, GridData.nodesize,GridData.nodesize);
+            clicked.setType(Type.BARRIER);
+            return;
+        }
+        if (rbtnEmpty.isSelected()){
+            gc.setFill(Paint.valueOf("White"));
+            gc.fillRect(clickX * GridData.nodesize, clickY * GridData.nodesize, GridData.nodesize,GridData.nodesize);
+            clicked.setType(Type.EMPTY);
+            return;
+        }
+    }
+    }

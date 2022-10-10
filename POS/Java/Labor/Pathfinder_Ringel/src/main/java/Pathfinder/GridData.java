@@ -26,10 +26,31 @@ public class GridData {
         return maxX;
     }
 
+    public static List<Node> getAllNodes() {
+        return allNodes;
+    }
+
     public int getMaxY() {
         return maxY;
     }
 
+    public boolean hasTarget(){
+        for(int i = 0; i< this.nodeMap.length;i++){
+            for(int j = 0 ; j< this.nodeMap[i].length;j++){
+                if(this.nodeMap[i][j].getType()== Type.TARGET) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasStart(){
+        for(int i = 0; i< this.nodeMap.length;i++){
+            for(int j = 0 ; j< this.nodeMap[i].length;j++){
+                if(this.nodeMap[i][j].getType()== Type.START) return true;
+            }
+        }
+        return false;
+    }
     public void fillGrid(){
         allNodes.clear();
         for(int x = 0;x<this.maxX/nodesize;x+=1){
